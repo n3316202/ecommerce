@@ -17,3 +17,8 @@ def for_loop(request):
     price = [100,200,300]
 
     return render(request, 'boards/for_loop.html', {'post_list': post_list,'name' : name, 'price':price})
+
+def detail(request, post_id):
+    post = Post.objects.get(id=post_id)
+    context = {'post': post}
+    return render(request, 'boards/post_detail.html', context)
