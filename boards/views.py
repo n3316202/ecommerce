@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.utils import timezone   
+from django.shortcuts import get_object_or_404, redirect, render
 
 from boards.models import Post
 
@@ -22,3 +23,9 @@ def detail(request, post_id):
     post = Post.objects.get(id=post_id)
     context = {'post': post}
     return render(request, 'boards/post_detail.html', context)
+
+def reply_create(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+
+    post.comment_set.create(content=request.POST.get('content'))
+    return redirect('boards:detail', post_id=post.id)
