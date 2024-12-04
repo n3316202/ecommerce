@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>Document</title>
+  </head>
+
+  <body>
+    <h1>Template Language!</h1>
+    <p>{{post_list}}</p>
+    {% for i in post_list %}
+      <div>번호 :{{forloop.counter}}번째 data</div>
+      <div>제목 :{{i.title}}</div>
+      {% if i.hit == 0 %}
+        <div>조회수 :{{i.hit}}</div>
+        {%else%}
+        <div>조회수가 0 초과 입니다. :{{i.hit}}</div>
+        {%endif%}
+        <div>내용 :{{i.content}}</div>
+        <br/>
+      {% endfor %}
+      <p>
+        <div>price 출력 :
+          {{price}}</div>
+        <div>l의 0번째 값은 :
+          {{price.0}}</div>
+        <div>l의 1번째 값은 :
+          {{price.1}}</div>
+        <div>l의 2번째 값은 :
+          {{price.2}}</div>
+      </p>
+      <p>
+        <div>name 출력 :
+          {{name}}</div>
+        <div>name의 key(name) 값은 :
+          {{name.name}}</div>
+        <div>name의 key(age)) 값은 :
+          {{name.age}}</div>
+        <div>name의 key(location) 값은 :
+          {{name.location}}</div>
+        <div>name의 key(isman) 값은 :
+          {{name.isman}}</div>
+      </p>
+      <br>
+      <h1>Template Language!</h1>
+      {% with value='hello Django'%}
+      <h4>{{value}}</h4>
+      {% endwith %}
+      {% lorem %}
+      <!-- 👈 lorem 생성 -->
+      {% lorem 3 p%}
+      <!-- 👈 lorem 문장(p)을 3개 생성 -->
+      {% lorem 2 w random %}
+      {% lorem 5 w random %}
+      <!-- 👈 lorem 단어(w)을 5개 랜덤 생성 -->
+
+    </body>
+
+  </html>
