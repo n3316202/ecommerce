@@ -5,7 +5,7 @@ from django.http import HttpResponse
  
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello, World!")
+    return render(request,"home/hello_world.html")
 
 def ok(request):
     return HttpResponse("홈 OK 입니다")
