@@ -1,6 +1,7 @@
 from django.utils import timezone   
 from django.shortcuts import get_object_or_404, redirect, render
 
+from boards.forms import PostForm
 from boards.models import Post
 
 # Create your views here.
@@ -29,3 +30,19 @@ def reply_create(request, post_id):
 
     post.comment_set.create(content=request.POST.get('content'))
     return redirect('boards:detail', post_id=post.id)
+
+def post_create(request):
+
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        
+        if form.is_valid(): # 폼이 유효하다면
+            post = form.save(commit=False) # 임시 저장하여 post 객체를 리턴받는다.
+            #post.created_at = timezone.now()# 실제 저장을 위해 작성일시를 설정한다.
+            post.save()# 데이터를 실제로 저장한다.
+            return redirect('boards:index')
+    else:
+        form = PostForm()
+
+    context = {'form': form}
+    return render(request, 'boards/post_form.html', context)

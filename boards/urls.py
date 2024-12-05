@@ -9,4 +9,5 @@ urlpatterns = [
    path("for_loop/", views.for_loop), #boards/for_loop/ 끝에 슬러시 주의 할것
    path('<int:post_id>/', views.detail, name='detail'),
    path('reply/create/<int:post_id>/', views.reply_create, name='reply_create'),
+   path('post/create/', views.post_create, name='post_create'),
 ]
