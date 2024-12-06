@@ -68,7 +68,7 @@ def comment_create(request,post_id):
             #post.created_at = timezone.now()# 실제 저장을 위해 작성일시를 설정한다.
             comment.post = post
             comment.save()# 데이터를 실제로 저장한다.
-            return redirect('boards:index', post_id=post.id)
+            return redirect('boards:index')
     else:
         return HttpResponseNotAllowed('Only POST is possible.')
 
