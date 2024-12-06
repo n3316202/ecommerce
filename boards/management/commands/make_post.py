@@ -15,9 +15,9 @@ class Command(BaseCommand):
             # todo = Todo.objects.create(name=f"테스트 todo {i}")
             post, created = Post.objects.get_or_create(title=f"테스트 post {i}",content=f"테스트 post {i}")
             if created:
-                print(f"{i}번째 todo 생성 완료")
+                print(f"{i}번째 post 생성 완료")
             else:
-                print(f"{i}번째 todo 이미 존재")
+                print(f"{i}번째 post 이미 존재")
         
         sys.stdout.write(self.style.SUCCESS("make post end :)"))
         print(post)

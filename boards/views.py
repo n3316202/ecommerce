@@ -4,12 +4,19 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from boards.forms import CommentForm, PostForm
 from boards.models import Comment, Post
-
+from django.core.paginator import Paginator  
 # Create your views here.
 # -기호가 붙으면 역방향 정렬을, 없으면 순방향 정렬을 의미한다. 게시물은 보통 최신순으로 보므로 작성일시를 역순으로 정렬했다.
 def index(request):
-    post_list = Post.objects.order_by('-created_at') 
-    context = {'post_list': post_list}
+    page = request.GET.get('page', '1')  # 페이지
+    
+    post_list = Post.objects.order_by('-created_at')
+    
+    paginator = Paginator(post_list, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+    context = {'post_list': page_obj} 
+    #context = {'post_list': post_list}
+
     return render(request, 'boards/post_list.html', context)
 
 def for_loop(request):
