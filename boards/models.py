@@ -1,9 +1,9 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Post(models.Model): 
-    #user        = models.ForeignKey(User, on_delete=models.CASCADE) 
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
     title = models.CharField(max_length=128, verbose_name='제목')
     hit = models.PositiveIntegerField(verbose_name='조회수', default=0)
     image_url   = models.URLField(max_length=500,blank=True,null=True)
