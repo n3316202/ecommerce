@@ -109,3 +109,32 @@ def post_delete(request, post_id):
         return redirect('boards:detail', post_id=post.id)
     post.delete()
     return redirect('boards:index')
+
+@login_required(login_url='boards:login')
+def comment_modify(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    
+    if request.user != comment.user:
+        messages.error(request, '수정권한이 없습니다')
+        return redirect('boares:detail', comment_id=comment.post.id)
+    
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            #answer.modify_date = timezone.now()
+            comment.save()
+            return redirect('boards:detail', post_id=comment.post.id)
+    else:
+        form = CommentForm(instance=comment)
+    context = {'comment': comment, 'form': form}
+    return render(request, 'boards/comment_form.html', context)
+
+@login_required(login_url='accounts:login')
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    if request.user != comment.user:
+        messages.error(request, '삭제권한이 없습니다')
+        return redirect('boards:detail', post_id=comment.post.id)
+    comment.delete()
+    return redirect('boards:detail', post_id=comment.post.id)
