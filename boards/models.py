@@ -14,6 +14,8 @@ class Post(models.Model):
     def __str__(self):
         return f"{self.id} {self.title}"
 
+    
+
 # 댓글 관련 테이블
 class Comment(models.Model):
     user       = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -22,3 +24,6 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.id} {self.content}"
+    

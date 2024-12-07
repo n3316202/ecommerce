@@ -8,7 +8,12 @@ from .models import Comment, Post
 #admin.site.register(Post)
 class PostAdmin(admin.ModelAdmin):
     search_fields = ['title','content']
-
+    list_display = ('id', 'user','title', 'created_at','updated_at')
 
 admin.site.register(Post, PostAdmin)
-admin.site.register(Comment)
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user','created_at','updated_at')
+
+#admin.site.register(Comment)
