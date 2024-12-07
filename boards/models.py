@@ -16,7 +16,7 @@ class Post(models.Model):
 
 # 댓글 관련 테이블
 class Comment(models.Model):
-    #user       = models.ForeignKey(User, on_delete=models.CASCADE)
+    user       = models.ForeignKey(User, on_delete=models.CASCADE)
     post       = models.ForeignKey(Post, on_delete=models.CASCADE)
     content    = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
