@@ -54,3 +54,12 @@ def post_delete(request, post_id):
         return redirect('boards:detail', post_id=post.id)
     post.delete()
     return redirect('boards:index')
+
+@login_required(login_url='accounts:login')
+def post_vote(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.user == post.user:
+        messages.error(request, '본인이 작성한 글은 추천할수 없습니다')
+    else:
+        post.voter.add(request.user)
+    return redirect('boards:detail', post_id=post.id)
