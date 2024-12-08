@@ -1,5 +1,10 @@
 {% extends 'layout/base.html' %}
 {% block content %}
+  {% include 'store/head.html' %}
+  <!-- 네비게이션바 -->
+  {% include "layout/navbar.html" %}
+  <!-- Header -->
+  {% include 'store/header.html' %}
   <!-- 답변 수정-->
   <div class="container my-3">
     <form method="post">

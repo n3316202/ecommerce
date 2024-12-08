@@ -1,5 +1,10 @@
 {% extends 'layout/base.html' %}
 {% block content %}
+{% include 'store/head.html' %}
+<!-- 네비게이션바 -->
+{% include "layout/navbar.html" %}    
+<!-- Header -->  
+{% include 'store/header.html' %}
   <div class="container">
     <h5 class="my-3 border-bottom pb-2">게시글등록</h5>
     <form method="post">

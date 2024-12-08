@@ -2,8 +2,14 @@
 {% load static %}
 
 {% block content %}
+
+    <!-- Head -->  
+    {% include 'store/head.html' %}
+    <!-- 네비게이션바 -->
+    {% include "layout/navbar.html" %}    
     <!-- Header -->  
     {% include 'store/header.html' %}
+
     <!-- Section-->
     <section class="py-5">
       <div class="container px-4 px-lg-5 mt-5">
