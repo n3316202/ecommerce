@@ -1,0 +1,53 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Head -->  
+    {% include 'store/head.html' %}
+    <div class="d-flex flex-column vh-100 justify-content-between">
+    <!-- 네비게이션바 -->
+    {% include "layout/navbar.html" %}    
+    {% comment %} <!-- Header -->  
+    {% include 'store/header.html' %} {% endcomment %}
+
+    <div class="container">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="..." />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <center>
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">{{product.description}}</p>
+    
+                {% if product.is_sale%}
+    
+                <div class="d-flex justify-content-center small text-warning mb-2">
+                  <div class="bi-star-fill"></div>
+                  <div class="bi-star-fill"></div>
+                  <div class="bi-star-fill"></div>
+                  <div class="bi-star-fill"></div>
+                  <div class="bi-star-fill"></div>
+                </div>
+                <!-- Product price-->
+                <strike> ${{ product.price }} </strike>
+                &nbsp; ${{product.sale_price}} 
+                {% else %} 
+                  ${{ product.price }} 
+                {%endif%}
+                <br><br><a class="btn btn-secondary" href="{% url 'store:home' %}">홈으로</a>
+              </center>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer-->
+    {% include 'store/footer.html' %}
+  </div>
+{% endblock content %}
+
