@@ -132,3 +132,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # 로그인 성공후 이동하는 URL
 LOGIN_REDIRECT_URL = '/'
+
+# 미디어 파일 경로 설정
+import os
+#http://127.0.0.1:8000/media/파일경로
+MEDIA_URL = 'media/'		# ex) /media/photo1.png
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
