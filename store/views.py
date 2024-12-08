@@ -33,7 +33,7 @@ def category(request, foo):
         products = Product.objects.filter(category=category)
         print(products)
         
-        return render(request, 'store/category.html',{'products':products,'category':category})
+        return render(request, 'store/category.html',{'products':products,'category':category,'categories':Category.objects.all })
     
     except:
         messages.success(request, ("카테고리가 존재하지 않습니다."))        
