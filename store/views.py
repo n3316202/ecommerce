@@ -22,7 +22,7 @@ def category(request, foo):
     #Replace Hyphens with Spaces
 
     foo = foo.replace('-',' ')
-    print(foo)
+    #print(foo)
 
     # Grab the category from the url
     try:
