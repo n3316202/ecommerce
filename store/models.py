@@ -17,6 +17,9 @@ class Product(models.Model):
     image = models.ImageField(upload_to='upload/product')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    #판매 가능 여부(Add Sale stuff)
+    is_sale = models.BooleanField(default=False)
+    sale_price = models.IntegerField(default=0) 
 
     def __str__(self):
         return self.name
