@@ -1,3 +1,6 @@
+from store.models import Product
+
+
 class Cart():
     def __init__(self, request):
         self.session = request.session
@@ -14,10 +17,11 @@ class Cart():
         #Make sure cart is available on all pages of site    
         self.cart = cart
 
-    def add(self,product):
+    def add(self,product, quantity):
 
         product_id  = str(product.id)
-
+        product_qty = str(quantity)
+        
         #>>> a[3] = [1, 2, 3]
         #>>> a
         #{1: 'a', 2: 'b', 'name': 'pey', 3: [1, 2, 3]}
@@ -25,9 +29,9 @@ class Cart():
         if product_id in self.cart:
             pass
         else:
-            self.cart[product_id] = {'price': str(product.price)}
+            #self.cart[product_id] = {'price': str(product.price)}
+            self.cart[product_id] = int(product_qty)
         
-        # Set session as modified to force data updates/cookie to be saved.
         self.session.modified = True
     
     def __len__(self):
@@ -40,7 +44,10 @@ class Cart():
 
         # use ids to lookup products in database model
         products =  Product.objects.filter(id__in=product_ids)
-        print("프로덕트", products)
+
         #Return those looked up products
         return products
     
+    def get_quants(self):
+        quantities = self.cart
+        return quantities
