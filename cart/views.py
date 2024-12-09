@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.shortcuts import render
 
 def cart_summary(reqeust):
-
     return render(reqeust, "cart/cart_summary.html",{})
 
 def cart_add(reqeust):
