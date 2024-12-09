@@ -39,6 +39,7 @@
                   ${{ product.price }} 
                 {%endif%}
                 <br><br><a class="btn btn-secondary" href="{% url 'store:home' %}">홈으로</a>
+                <button type="button" value="{{product.id}}" id="add-cart" class="btn btn-secondary">장바구니 담기</button>
               </center>
             </div>
           </div>
@@ -49,5 +50,26 @@
     <!-- Footer-->
     {% include 'store/footer.html' %}
   </div>
+
+  <script>
+    $(document).on('click', '#add-cart',function(e){
+      $.ajax({
+        type:"POST",
+        url:"{% url 'cart:cart_add' %}",
+        data:{
+          product_id: $('#add-cart').val(),
+          csrfmiddlewaretoken:'{{  csrf_token }}',
+          action: 'post'
+        },
+        success : function(json){
+          console.log(json)
+        },
+        error : function(e){
+          console.log(e)
+        }
+      })
+    });
+  </script>
+
 {% endblock content %}
 
