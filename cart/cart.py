@@ -29,3 +29,8 @@ class Cart():
         
         # Set session as modified to force data updates/cookie to be saved.
         self.session.modified = True
+    
+    def __len__(self):
+        return len(self.cart)
+    
+    
