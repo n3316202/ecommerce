@@ -75,6 +75,7 @@
                     <a href="{% url 'store:home' %}" class="btn btn-secondary">홈으로</a>
                     {% comment %} <button type="button" value="{{product.id}}" id="add-cart" class="btn btn-secondary">Add to Cart</button> {% endcomment %}
                     <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">업데이트</button>
+                    <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product">삭제</button>
                   </center>
                 </div>
               </div>
@@ -107,6 +108,28 @@
           error: function (e) {
             console.log(e);
           }
+        });
+      });
+
+      $(document).on('click', '.delete-product', function (e) {
+        let productid = $(this).data('index');
+    
+        $.ajax({
+          type: 'POST',
+          url: '{% url "cart:cart_delete" %}',
+          data: {
+            product_id: $(this).data('index'),
+    
+            csrfmiddlewaretoken: '{{  csrf_token }}',
+            action: 'post',
+          },
+          success: function (json) {
+            console.log(json);
+            location.reload(); //페이지 새로 고침
+          },
+          error: function (e) {
+            console.log(e);
+          },
         });
       });
     </script>
