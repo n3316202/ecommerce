@@ -38,3 +38,7 @@ def category(request, foo):
     except:
         messages.success(request, ("카테고리가 존재하지 않습니다."))        
         return redirect('store:home')
+
+def category_summary(request):
+    categories = Category.objects.all()
+    return render(request,'store/category_summary.html',{'categories':categories})
