@@ -72,6 +72,17 @@ class Cart():
         self.session.modified = True
         thing = self.cart
 
+        #dev_40
+        if self.request.user.is_authenticated:
+                
+            # Get the current user profile
+            cart, created =  CartModel.objects.get_or_create(user=self.request.user)
+            print(cart)
+            cart_item, created = CartItem.objects.get_or_create(cart=cart,product_id=product_id)
+            cart_item.quantity = quantity
+            print(cart_item)
+            cart_item.save()
+
         return thing
     
     def delete(self,product):
@@ -82,6 +93,7 @@ class Cart():
 
         self.session.modified = True
 
+        #dev_40
         # Deal with logged in user
         if self.request.user.is_authenticated:
                 
@@ -141,9 +153,3 @@ class Cart():
             print(cart_item)
             cart_item.quantity = int(quantity)
             cart_item.save()
-            #current_user = Profile.objects.filter(user__id=self.request.user.id)
-
-            # {'3':1,'2':1}
-            #carty = str(self.cart)
-            #carty = carty.replace("\'","\"")
-            #current_user.update(old_cart=str(carty))
