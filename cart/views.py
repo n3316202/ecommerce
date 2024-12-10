@@ -55,7 +55,6 @@ def cart_delete(request):
     cart = Cart(request)
 
     if request.POST.get('action') == 'post':
-        print('=========')
         
         #get stuff
         product_id = int(request.POST.get('product_id'))

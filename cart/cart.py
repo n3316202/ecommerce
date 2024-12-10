@@ -82,6 +82,18 @@ class Cart():
 
         self.session.modified = True
 
+        # Deal with logged in user
+        if self.request.user.is_authenticated:
+                
+            # Get the current user profile
+            cart, created =  CartModel.objects.get_or_create(user=self.request.user)
+            print(cart)
+            cart_item, created = CartItem.objects.get_or_create(cart=cart,product_id=product_id)
+            print(cart_item)
+            cart_item.delete()
+
+
+
     def cart_total(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
