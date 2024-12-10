@@ -6,6 +6,7 @@ from django.shortcuts import render
 
 from cart.cart import Cart
 from store.models import Product
+from django.contrib import messages
 
 def cart_summary(request):
     # Get the cart
@@ -23,10 +24,7 @@ def cart_add(request):
     
     cart  = Cart(request)
 
-    print("카트========",cart)
-
     if request.POST.get('action') == 'post':
-        print('=========')
         
         #get stuff
         product_id = int(request.POST.get('product_id'))
@@ -44,10 +42,10 @@ def cart_add(request):
         #Get Cart Quantity
         cart_quantity = cart.__len__()
         response = JsonResponse({'qty': cart_quantity})
-
+        #추가 dev_38
+        messages.success(request,"장바구니에 해당 상품이 추가되었습니다.")
         return response
     
-    print("카트========마지막")
 
 def cart_delete(request):
     cart = Cart(request)
@@ -62,6 +60,7 @@ def cart_delete(request):
         cart.delete(product=product_id)
 
         response = JsonResponse({'product':product_id})
+        messages.success(request,"장바구니에서 해당 상품이 삭제되었습니다.")
         return response
 
 def cart_update(request):
@@ -74,5 +73,7 @@ def cart_update(request):
         product_qty = int(request.POST.get('product_qty'))
         cart.update(product=product_id, quantity=product_qty)
         response = JsonResponse({'qty':product_qty})
+        #추가 dev_38
+        messages.success(request,"장바구니가 업데이트 되었습니다.")        
         return response
 
