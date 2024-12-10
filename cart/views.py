@@ -37,7 +37,11 @@ def cart_add(request):
         print("프로덕트",product)
 
         #save to session
-        cart.add(product=product, quantity = product_qty)
+        #cart.add(product=product, quantity = product_qty)
+        #dev_40 DB 저장모듈 추가
+        cart.add_to_cart(product=product, quantity = product_qty)
+
+
 
         #Get Cart Quantity
         cart_quantity = cart.__len__()
