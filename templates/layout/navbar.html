@@ -11,6 +11,7 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'store:home' %}">Home</a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'store:about' %}">About</a>
         </li>
@@ -49,6 +50,10 @@
             {% endif %}
 
           </ul>
+        </li>
+        {% comment %} dev_39 추가 {% endcomment %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'store:search' %}">검색</a>
         </li>
       </ul>
       <form class="d-flex">
