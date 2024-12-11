@@ -35,4 +35,3 @@ def payment_update_info(request):
          messages.success(request, "You Must be logged In To Access That Page!!")
          return redirect('/login')
 
-    #return render(request, "payment/payment_update_info.html",{})
