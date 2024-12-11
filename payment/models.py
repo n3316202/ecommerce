@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from store.models import Product
+
 # Create your models here.
 #dev_41 model 생성
 class ShippingAddress(models.Model):
@@ -14,6 +16,8 @@ class ShippingAddress(models.Model):
     state = models.CharField(max_length=255, null=True,blank=True)
     zipcode = models.CharField(max_length=255, null=True,blank=True)
     country = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # Dont' plurallize address
     #어드민 패널을 만지다 보면 내가 등록한 모델 이름을 장고 어드민이 알아서 복수로 만들어 주는 것을 알 수 있다. 
@@ -30,3 +34,24 @@ class ShippingAddress(models.Model):
     
     def __str__(self):
         return f'배송주소 - {str(self.id)}'
+    
+#dev_43
+# Create order Model
+class Order(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    amount_paid = models.PositiveBigIntegerField(default=0) 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self) -> str:
+        return f'Order - {str(self.id)}'
+
+# Create order Items Model
+class OrderItem(models.Model):
+    #Forign Keys
+    order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,null=True,blank=True)
+    quantity = models.PositiveBigIntegerField(default=1) #양수: PositiveBigIntegerField, 4바이트 정수 필드 (unsigned).
+    price = models.PositiveBigIntegerField(default=0) #
+
+    def __str__(self) -> str:
+        return f'Order Item - {str(self.id)}'

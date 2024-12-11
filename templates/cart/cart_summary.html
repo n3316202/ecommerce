@@ -82,7 +82,11 @@
             </div>
           </div>
         {% endfor %}
-        <h3 class="text-center">Total:{{totals}}원</h3>
+        {% comment %} #dev_43 {% endcomment %}
+        <div class="text-center">
+          <h3 >Total:{{totals}}원</h3>
+          <a class="btn btn-success text-center" href="{% url 'payment:payment_success'%}">주문</a>
+        </div>
         <br />
         <br />
         <br />
