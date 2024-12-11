@@ -10,6 +10,7 @@ urlpatterns = [
     path("boards/", include('boards.urls')),
     path('account/', include('accounts.urls')),
     path("cart/", include('cart.urls')), 
+    path("payment/", include('payment.urls')), #dev_41 settings 추가
 ]
 
 if settings.DEBUG:

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'cart',
+    'payment',#dev_41 앱추가
 ]
 
 MIDDLEWARE = [
