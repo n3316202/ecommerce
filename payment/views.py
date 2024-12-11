@@ -1,8 +1,10 @@
+from statistics import quantiles
 from django.shortcuts import redirect, render
 from django.urls import path
 
+from cart.cart import Cart
 from payment.forms import ShippingForm
-from payment.models import ShippingAddress
+from payment.models import Order, ShippingAddress
 from . import views
 from django.contrib import messages
 
@@ -34,4 +36,36 @@ def payment_update_info(request):
     else:
          messages.success(request, "You Must be logged In To Access That Page!!")
          return redirect('/login')
+
+#dev_43
+def payment_process_order(request):
+    
+    if request.POST:
+
+        cart = Cart(request)
+        cart_products = cart.get_prods
+        quantiles = cart.get_quants
+        totals = cart.cart_total()
+        print(totals)
+        
+        #Gether Order Info
+        if request.user.is_authenticated:
+            #logged in
+            user = request.user
+            #Create Order
+            create_order = Order(user=user)
+            create_order.amount_paid = totals
+            create_order.save()
+
+            messages.success(request, "주문이 완료 되었습니다.")
+            return redirect('/')
+        else:
+            messages.success(request, "You Must be logged In To order the products")
+            return redirect('/login')
+
+
+    else:
+        messages.success(request, "Access denied")
+        return redirect('/')
+            
 

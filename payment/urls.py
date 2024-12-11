@@ -9,4 +9,5 @@ app_name = 'payment'
 urlpatterns = [
     path("payment_update_info/", views.payment_update_info, name="payment_update_info"), #dev_42 추가
     path("payment_success/", views.payment_success, name="payment_success"),
+    path("payment_process_order/", views.payment_process_order, name="payment_process_order"),
 ]
