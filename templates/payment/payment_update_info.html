@@ -1,0 +1,76 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% comment %} #dev_42 {% endcomment %}
+{% block content %}
+
+  {% include 'store/head.html' %}
+  <div class="d-flex flex-column vh-100 justify-content-between">
+
+    <!-- 네비게이션바 -->
+    {% include "layout/navbar.html" %}
+
+    <header class="bg-dark py-5">
+      <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+          <h1 class="display-4 fw-bolder">배송지 정보 업데이트</h1>
+          <p class="lead fw-normal text-white-50 mb-0">Update payment Info..</p>
+        </div>
+      </div>
+    </header>
+
+    <br/>
+
+    <div class="container my-5">
+      <h1 class="text-center"><strong>배송 정보</strong></h1>
+      <br>
+      <br>
+      <form method="post" action="{% url 'payment:payment_update_info' %}">
+        {% csrf_token %}
+        {% include "layout/form_errors.html" %}
+        <div class="mb-3">
+          <label for="username">이름</label>
+          <input type="text" class="form-control" name="full_name" id="full_name" value="{{ form.full_name.value | default_if_none:'' }}"/>
+        </div>
+        <div class="mb-3">
+          <label for="password1">전화번호</label>
+          <input type="text" class="form-control" name="phone" id="phone" value="{{ form.phone.value|default_if_none:'' }}"/>
+        </div>
+        <div class="mb-3">
+            <label for="password1">이메일</label>
+            <input type="text" class="form-control" name="email" id="email" value="{{ form.email.value|default_if_none:'' }}"/>
+          </div>
+        <div class="mb-3">
+          <label for="password1">주소1</label>
+          <input type="text" class="form-control" name="address1" id="address1" value="{{ form.address1.value|default_if_none:''}}"/>
+        </div>
+        <div class="mb-3">
+          <label for="password1">주소2</label>
+          <input type="text" class="form-control" name="address2" id="address2" value="{{ form.address2.value|default_if_none:''}}"/>
+        </div>
+        <div class="mb-3">
+          <label for="password1">도시</label>
+          <input type="text" class="form-control" name="city" id="city" value="{{ form.city.value|default_if_none:'' }}"/>
+        </div>
+        <div class="mb-3">
+          <label for="state">군/구</label>
+          <input type="text" class="form-control" name="state" id="state" value="{{ form.state.value|default_if_none:'' }}"/>
+        </div>
+        <div class="mb-3">
+          <label for="password1">ZipCode</label>
+          <input type="text" class="form-control" name="zipcode" id="zipcode" value="{{ form.zipcode.value|default_if_none:'' }}"/>
+        </div>
+        <div class="mb-3">
+          <label for="country">Contry</label>
+          <input type="text" class="form-control" name="country" id="country" value="{{ form.country.value|default_if_none:'' }}"/>
+        </div>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-primary">업데이트</button>
+      </form>
+
+    </div>
+
+    <!-- Footer-->
+    {% include 'store/footer.html' %}
+  </div>
+{%endblock content%}
