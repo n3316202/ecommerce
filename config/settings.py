@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'store',
     'cart',
     'payment',#dev_41 앱추가
+    'instagram',#인스타그램 앱 추가
 ]
 
 MIDDLEWARE = [
