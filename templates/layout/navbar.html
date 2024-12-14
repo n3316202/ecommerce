@@ -19,6 +19,10 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">결재정보</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% comment %} #dev_45 추가 {% endcomment %}
+            <li>
+              <a class="dropdown-item" href="{% url 'payment:payment_order_list' %}">주문목록</a>
+            </li>
             <li>
               <a class="dropdown-item" href="{% url 'payment:payment_update_info' %}">배송주소 변경</a>
             </li>

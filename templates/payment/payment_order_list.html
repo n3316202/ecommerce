@@ -1,0 +1,55 @@
+{% extends 'layout/base.html' %}
+{% comment %} #dev_45 추가{% endcomment %}
+{% load static %}
+{% comment %} #dev_42 {% endcomment %}
+{% block content %}
+
+  {% include 'store/head.html' %}
+  <div class="d-flex flex-column vh-100 justify-content-between">
+
+    <!-- 네비게이션바 -->
+    {% include "layout/navbar.html" %}
+
+    <header class="bg-dark py-5">
+      <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+          <h1 class="display-4 fw-bolder">주문목록</h1>
+          <p class="lead fw-normal text-white-50 mb-0">your orders are..</p>
+        </div>
+      </div>
+    </header>
+
+    <br/>
+
+    <div class="container my-5">
+      <h1 class="text-center"><strong>주문 목록</strong></h1>
+      <br>
+      <br>
+      <table class = "table table-dark text-center">
+        <thead class = "thead thead-dark">
+            <tr>
+                <td scope = "col">주문번호</td>
+                <td scope = "col">상품명</td>
+                <td scope = "col">수량</td>
+                <td scope = "col">주문날짜</td>
+            </tr>
+        </thead>
+        <tbody class = "text-light">           
+            {% for order in orders %}
+              {% for item in order.orderitem_set.all %}
+                <tr>
+                  <td scope = "col">{{order.id}}</td>
+                  <td>{{item.product}}</td>
+                  <td>{{item.quantity}}개</td>
+                  <td>{{order.updated_at|date:'Y-m-d H:i'}}</td>
+                </tr> 
+              {% endfor %} 
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+    <!-- Footer-->
+    {% include 'store/footer.html' %}
+  </div>
+{%endblock content%}

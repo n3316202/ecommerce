@@ -98,5 +98,16 @@ def payment_process_order(request):
     else:
         messages.success(request, "Access denied")
         return redirect('/')
-            
 
+#dev_45            
+def payment_order_list(request):
+
+    if request.user.is_authenticated:
+        
+        #Get Current uer's shipping Info
+        orders = Order.objects.filter(user__id=request.user.id)
+                
+        return render(request, "payment/payment_order_list.html",{'orders':orders})
+    else:
+         messages.success(request, "You Must be logged In To Access That Page!!")
+         return redirect('/login')
