@@ -74,6 +74,10 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'store:search' %}">검색</a>
         </li>
+        {% comment %} dev_46 추가 {% endcomment %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'accounts:kakao_login' %}">소셜로그인</a>
+        </li>
       </ul>
       <form class="d-flex">
         <a href="{% url 'cart:cart_summary'%}" class="btn btn-outline-dark">

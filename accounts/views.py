@@ -10,6 +10,10 @@ from cart.models import Cart as CartModel, CartItem
 import json
 
 # Create your views here.
+def kakao_login(request):
+    
+    return render(request, 'accounts/kakao_login.html')
+
 def logout_user(request):
     logout(request)
     return redirect('/')

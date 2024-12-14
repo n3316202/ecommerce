@@ -11,6 +11,7 @@ urlpatterns = [
     path('account/', include('accounts.urls')),
     path("cart/", include('cart.urls')), 
     path("payment/", include('payment.urls')), #dev_41 settings 추가
+    path('accounts/', include('allauth.urls')),#dev_46 
 ]
 
 if settings.DEBUG:
