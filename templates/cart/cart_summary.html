@@ -3,7 +3,57 @@
 
 {% block content %}
 
-  {% include 'store/head.html' %}
+  {% comment %} #dev_47 head 수정 {% endcomment %}
+  {% include 'payment/head.html' %}
+  <script>
+    function requestPay() {
+      //const amount = document.getElementById("price").value;
+      const amount = 10;
+
+      const IMP = window.IMP; 
+      IMP.init("imp43216235"); // 예: imp00000000a
+      IMP.request_pay(
+        {
+          pg: "html5_inicis", //PG사
+          pay_method: "card", //결제방식
+          //merchant_uid: "ORD20180131-0000011", // 주문번호, 상품ID, 생략시 자동생성
+          name: "노르웨이 회전 의자",
+          amount: amount, // 결제금액
+          buyer_email: "gildong@gmail.com",	//구매자 이메일
+          buyer_name: "홍길동",	//구매자 이름
+          buyer_tel: "010-4242-4242",	//구매자 전화번호
+          buyer_addr: "서울특별시 강남구 신사동",	//구매자 주소
+          buyer_postcode: "01181",	//구매자 번호
+        },
+        function (rsp) {
+          console.log(rsp);      
+          if (rsp.success) {
+            //Backend API에 결제완료 처리
+            //axios.post(
+            //  "http://localhost:3000/payment",
+            //  {
+            //    impUid: rsp.imp_uid,
+            //    amount: rsp.paid_amount,
+            //  },
+            //  {
+            //    /*
+            //    headers: {
+            //      Authorization: "Bearer " + token,
+            //    },
+            //    */
+            //  }
+            //);
+            
+            alert("결제 성공");
+          } else {
+            alert("결제 실패");
+          }
+        }
+      );
+    }
+  </script>
+
+
   <!-- 네비게이션바 -->
   {% include "layout/navbar.html" %}
 
@@ -84,12 +134,14 @@
             </div>
           {% endfor %}
           {% comment %} #dev_43 {% endcomment %}
-          <div class="text-center">
-            <h3 >Total:{{totals}}원</h3>
-            {% comment %} <a class="btn btn-success text-center" href="{% url 'payment:payment_process_order'%}">주문</a> {% endcomment %}
-            <button type="submit" class="btn btn-success text-center" >주문</button>
-          </div>
         </form>
+        {% comment %} #dev_47 임시로 {% endcomment %}
+        <div class="text-center">
+          <h3 >Total:{{totals}}원</h3>
+          {% comment %} <a class="btn btn-success text-center" href="{% url 'payment:payment_process_order'%}">주문</a> {% endcomment %}
+          <button onclick="requestPay()" type="submit" class="btn btn-success text-center" >주문</button>
+        </div>
+
         <br />
         <br />
         <br />
