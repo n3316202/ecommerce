@@ -5,17 +5,84 @@
 
   {% comment %} #dev_47 head 수정 {% endcomment %}
   {% include 'payment/head.html' %}
+  
+  {% comment %} dev_47 {% endcomment %}
   <script>
+
+    var impCode = 'imp43216235';
+    function handlePayment(pg, pay_method){
+      console.log("handlePayment");
+      console.log(pg);
+      console.log(payMethod);
+
+      var order = {
+          productId: 1,
+          productName: '상품1',
+          price: 3000,
+          quantity: 1
+      };
+
+        // 결제하기 버튼 클릭 시 결제 요청
+      IMP.init(impCode);
+      IMP.request_pay({
+          pg: pg,
+          pay_method: payMethod,
+          //merchant_uid: '212R3A11TD233AAC', // 주문번호 생성
+          name: '상품1',
+          amount: 3000, // 결제 가격
+          buyer_name: '김민규',
+          buyer_tel: '010-1234-5678'
+        }, function(rsp) {
+            if (rsp.success) {
+                // 결제 성공 시
+                $.ajax({
+                    type: 'POST',
+                    url: 'api/v1/payment/validation/' + rsp.imp_uid
+                }).done(function(data) {
+                    console.log(data);
+                    if (order.price == data.response.amount) {
+                        order.impUid = rsp.imp_uid;
+                        order.merchantUid = rsp.merchant_uid;
+                        // 결제 금액 일치. 결제 성공 처리
+                        $.ajax({
+                            url: "api/v1/payment/order",
+                            method: "post",
+                            data: JSON.stringify(order),
+                            contentType: "application/json"
+                        }).then(function(res) {
+                            console.log("res", res);
+                            console.log("rsp", rsp);
+                            var msg = '결제가 완료되었습니다.';
+                            msg += '고유ID : ' + rsp.imp_uid;
+                            msg += '상점 거래ID : ' + rsp.merchant_uid;
+                            msg += '결제 금액 : ' + rsp.paid_amount;
+                            msg += '카드 승인번호 : ' + rsp.apply_num;
+                            alert(msg);
+                        }).catch(function(error) {
+                            alert("주문정보 저장을 실패 했습니다.");
+                        });
+                    }
+                }).catch(function(error) {
+                    alert('결제에 실패하였습니다. ' + rsp.error_msg);
+                });
+            } else {
+                alert(rsp.error_msg);
+            }
+        });
+    }
+
     function requestPay() {
       //const amount = document.getElementById("price").value;
-      const amount = 10;
+      const amount = 100;
 
       const IMP = window.IMP; 
       IMP.init("imp43216235"); // 예: imp00000000a
       IMP.request_pay(
         {
           pg: "html5_inicis", //PG사
+          pg: "kakaopay", //PG사
           pay_method: "card", //결제방식
+          //pay_method: "kakaopay", //결제방식          
           //merchant_uid: "ORD20180131-0000011", // 주문번호, 상품ID, 생략시 자동생성
           name: "노르웨이 회전 의자",
           amount: amount, // 결제금액
@@ -26,7 +93,13 @@
           buyer_postcode: "01181",	//구매자 번호
         },
         function (rsp) {
-          console.log(rsp);      
+          //https://happyzodiac.tistory.com/75#(1)%20Front-1
+          //https://velog.io/@ryusemin/React%EC%97%90%EC%84%9C-%EB%AA%A8%EC%9D%98%EA%B2%B0%EC%A0%9C-%EA%B5%AC%ED%98%84-Portone-API
+          // 결제 종료 시 호출되는 콜백 함수
+          // response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
+          // 결제 결과를 처리하는 로직을 작성합니다.
+          console.log(rsp);
+
           if (rsp.success) {
             //Backend API에 결제완료 처리
             //axios.post(
@@ -139,7 +212,8 @@
         <div class="text-center">
           <h3 >Total:{{totals}}원</h3>
           {% comment %} <a class="btn btn-success text-center" href="{% url 'payment:payment_process_order'%}">주문</a> {% endcomment %}
-          <button onclick="requestPay()" type="submit" class="btn btn-success text-center" >주문</button>
+          <button id="cardPay" onclick="handlePayment('html5_inicis.INIpayTest', 'card')" type="submit" class="btn btn-success text-center" >카드결제</button>
+          <button id="kakaoPay" onclick="handlePayment('kakaopay', 'card')" type="submit" class="btn btn-success text-center" >카카오페이 결제</button>
         </div>
 
         <br />
