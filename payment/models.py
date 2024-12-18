@@ -1,3 +1,4 @@
+from tkinter import N
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -55,3 +56,10 @@ class OrderItem(models.Model):
 
     def __str__(self) -> str:
         return f'Order Item - {str(self.id)}'
+    
+#dev_47
+class Payment(models.Model):
+    order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    imp_uid = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
