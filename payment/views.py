@@ -93,8 +93,6 @@ def payment_process_order(request):
         else:
             messages.success(request, "You Must be logged In To order the products")
             return redirect('/login')
-
-
     else:
         messages.success(request, "Access denied")
         return redirect('/')

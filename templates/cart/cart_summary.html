@@ -10,6 +10,7 @@
   <script>
 
     var impCode = 'imp43216235';
+
     function handlePayment(pg, pay_method){
       console.log("handlePayment");
       console.log(pg);
@@ -27,8 +28,8 @@
       IMP.request_pay({
           pg: pg,
           pay_method: payMethod,
-          //merchant_uid: '212R3A11TD233AAC', // 주문번호 생성
-          name: '상품1',
+          //merchant_uid: '212R3A11TD233AAC', // 주문번호 생성(생략시 포트원에서 자동생성)
+          name: '상품1', //결제창에 노출될 상품명
           amount: 3000, // 결제 가격
           buyer_name: '김민규',
           buyer_tel: '010-1234-5678'
@@ -210,12 +211,13 @@
         </form>
         {% comment %} #dev_47 임시로 {% endcomment %}
         <div class="text-center">
-          <h3 >Total:{{totals}}원</h3>
+          <h3 id="totals" data-totals="{{totals}}">Total:{{totals}}원</h3>
           {% comment %} <a class="btn btn-success text-center" href="{% url 'payment:payment_process_order'%}">주문</a> {% endcomment %}
-          <button id="cardPay" onclick="handlePayment('html5_inicis.INIpayTest', 'card')" type="submit" class="btn btn-success text-center" >카드결제</button>
-          <button id="kakaoPay" onclick="handlePayment('kakaopay', 'card')" type="submit" class="btn btn-success text-center" >카카오페이 결제</button>
+          {% comment %} <button id="cardPay" onclick="handlePayment('html5_inicis.INIpayTest', 'card')" type="submit" class="btn btn-success text-center" >카드결제</button>
+          <button id="kakaoPay" onclick="handlePayment('kakaopay', 'card')" type="submit" class="btn btn-success text-center" >카카오페이</button> {% endcomment %}
+          <button id="cardPay" data-pg="html5_inicis.INIpayTest" data-pay="card"  class="btn btn-success text-center request-pay" >카드결제</button>
+          <button id="kakaoPay" data-pg="kakaopay" data-pay="card" class="btn btn-success text-center request-pay" >카카오페이</button>
         </div>
-
         <br />
         <br />
         <br />
@@ -225,6 +227,114 @@
     </div>
 
     <script>
+
+      $(document).on('click', '.request-pay', function (e) {
+        let pg = $(this).data('pg');
+        let payMethod = $(this).data('pay');
+        let priceTotals = $("#totals").data('totals');        
+
+        // 결제하기 버튼 클릭 시 결제 요청
+        IMP.init(impCode);
+        IMP.request_pay({
+          pg: pg,
+          pay_method: payMethod,
+          //merchant_uid: '212R3A11TD233AAC', // 주문번호 생성(생략시 포트원에서 자동생성)
+          name: '장바구니 주문', //결제창에 노출될 상품명
+          //amount: priceTotals, // 결제 가격
+          amount: 100,//테스트를 위하여 100원으로 설정
+          buyer_name: '{{user.username}}', // 구매자 이름
+          buyer_tel: '010-1234-5678',
+          //buyer_addr : buyerAddress, // 구매자 주소
+          //buyer_postcode : '123-456', // 임의의 값
+        }, function(rsp) {
+            if (rsp.success) {
+                // 결제 성공 시
+                console.log(rsp);
+                console.log("결재성공");                
+                
+                // 결제 성공 시 로직
+                //1.주문 정보 저장을 위해 ajax 요청
+                //2.서버에서 결재금액과 주문금액(세션에 저장되어있는)이 일치하는지 확인
+                //3.일치하면 주문 정보 및 결재정보 저장
+                $.ajax({
+                  type: 'POST',
+                  url: '{% url "payment:payment_process_order" %}',
+                  data: {
+                    imp_uid: rsp.imp_uid, //결재아이디(포트원에서 생성된 고유값)
+                    paid_amount: rsp.paid_amount, //결재 금액                    
+                    csrfmiddlewaretoken: '{{  csrf_token }}',
+                    action: 'post'
+                  },
+                  success: function (json) {
+                    console.log(json);
+                    location.reload();
+                  },
+                  error: function (e) {
+                    alert('결제에 실패하였습니다. ' + rsp.error_msg);
+                  }
+                });
+                
+                /*
+                $.ajax({
+                    type: 'POST',
+                    url: 'api/v1/payment/validation/' + rsp.imp_uid
+                }).done(function(data) {
+                    console.log(data);
+                    if (order.price == data.response.amount) {
+                        order.impUid = rsp.imp_uid;
+                        order.merchantUid = rsp.merchant_uid;
+                        // 결제 금액 일치. 결제 성공 처리
+                        $.ajax({
+                            url: "api/v1/payment/order",
+                            method: "post",
+                            data: JSON.stringify(order),
+                            contentType: "application/json"
+                        }).then(function(res) {
+                            console.log("res", res);
+                            console.log("rsp", rsp);
+                            var msg = '결제가 완료되었습니다.';
+                            msg += '고유ID : ' + rsp.imp_uid;
+                            msg += '상점 거래ID : ' + rsp.merchant_uid;
+                            msg += '결제 금액 : ' + rsp.paid_amount;
+                            msg += '카드 승인번호 : ' + rsp.apply_num;
+                            alert(msg);
+                        }).catch(function(error) {
+                            alert("주문정보 저장을 실패 했습니다.");
+                        });
+                    }
+                }).catch(function(error) {
+                    alert('결제에 실패하였습니다. ' + rsp.error_msg);
+                });
+                */
+              } else {
+                alert(rsp.error_msg);
+              }
+        });
+
+
+        /*
+          $.ajax({
+            type: 'POST',
+            url: '{% url "cart:cart_update" %}',
+            data: {
+              product_id: $(this).data('index'),
+              product_qty: qty,
+              csrfmiddlewaretoken: '{{  csrf_token }}',
+              action: 'post'
+            },
+            success: function (json) {
+              console.log(json);
+              location.reload();
+            },
+            error: function (e) {
+              console.log(e);
+            }
+          });
+        */ 
+
+      });
+
+
       $(document).on('click', '.update-cart', function (e) {
         let productid = $(this).data('index');
         let qty = $('#select' + productid + ' ' + 'option:selected').text();
@@ -255,8 +365,7 @@
           type: 'POST',
           url: '{% url "cart:cart_delete" %}',
           data: {
-            product_id: $(this).data('index'),
-    
+            product_id: $(this).data('index'),    
             csrfmiddlewaretoken: '{{  csrf_token }}',
             action: 'post',
           },
