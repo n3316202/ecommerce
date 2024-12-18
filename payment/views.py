@@ -1,11 +1,12 @@
 from statistics import quantiles
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import path
 
 from cart.cart import Cart
 from cart.views import cart_delete
 from payment.forms import ShippingForm
-from payment.models import Order, OrderItem, ShippingAddress
+from payment.models import Order, OrderItem, Payment, ShippingAddress
 from . import views
 from django.contrib import messages
 
@@ -53,43 +54,57 @@ def payment_process_order(request):
         
         #Gether Order Info
         if request.user.is_authenticated:
-            #logged in
-            user = request.user
-            #Create Order
-            create_order = Order(user=user)
-            create_order.amount_paid = totals
-            create_order.save()
-
-            #dev_44
-            #Add Order Items
-            #Get the oorder ID
-            order_id = create_order.pk
-
-            #Get product info
-            for product  in cart_products():
-                product_id = product.id
-                #Get product price
-                if product.is_sale:
-                    price = product.sale_price
-                else:
-                    price = product.price
-
-                #Get quantity
-                for key,value in quantiles().items():
-                    if int(key)  == product.id:
-                        #Create Order Item
-                        create_order_item = OrderItem(order_id=order_id,product_id=product_id,quantity=value,price=price)
-                        create_order_item.save()
-                        
             
+            print(request.POST['paid_amount'])
+
+            #dev_47 금액이 같은지 확인
+            #if totals == request.POST['paid_amount']:
+            if 10 == int(request.POST['paid_amount']): #테스트를 위하여 10으로 넣고 대입입             
+                #logged in
+                user = request.user
+                #Create Order
+                create_order = Order(user=user)
+                create_order.amount_paid = totals
+                create_order.save()
+
+                #dev_44
+                #Add Order Items
+                #Get the oorder ID
+                order_id = create_order.pk
+
+                #Get product info
+                for product  in cart_products():
+                    product_id = product.id
+                    #Get product price
+                    if product.is_sale:
+                        price = product.sale_price
+                    else:
+                        price = product.price
+
+                    #Get quantity
+                    for key,value in quantiles().items():
+                        if int(key)  == product.id:
+                            #Create Order Item
+                            create_order_item = OrderItem(order_id=order_id,product_id=product_id,quantity=value,price=price)
+                            create_order_item.save()            
+                
+                
+                #Delete cart item(만약 카트도 지우고 싶다면)
+                for key in list(quantiles().keys()):
+                    cart_delete(key)
+                
+                #결재 데이터 저장
+                create_payment = Payment(order=create_order)
+                create_payment.imp_uid = request.POST['imp_uid']
+                create_payment.save()
             
-            #Delete cart item(만약 카트도 지우고 싶다면)
-            for key in list(quantiles().keys()):
-                cart_delete(key)
+                #messages.success(request, "결재 금액이 일치합니다.")
+                return HttpResponse("SUCCESS")
 
+            else:
+                #messages.success(request, "결재 금액이 일치하지 않습니다.")
+                return HttpResponse("FAIL")
 
-            messages.success(request, "주문이 완료 되었습니다.")
-            return redirect('/')
         else:
             messages.success(request, "You Must be logged In To order the products")
             return redirect('/login')

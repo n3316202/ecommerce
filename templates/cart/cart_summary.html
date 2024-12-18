@@ -241,9 +241,10 @@
           //merchant_uid: '212R3A11TD233AAC', // 주문번호 생성(생략시 포트원에서 자동생성)
           name: '장바구니 주문', //결제창에 노출될 상품명
           //amount: priceTotals, // 결제 가격
-          amount: 100,//테스트를 위하여 100원으로 설정
+          amount: 10,//테스트를 위하여 10원으로 설정
           buyer_name: '{{user.username}}', // 구매자 이름
           buyer_tel: '010-1234-5678',
+          buyer_email: '{{user.email}}', // 구매자 이메일,
           //buyer_addr : buyerAddress, // 구매자 주소
           //buyer_postcode : '123-456', // 임의의 값
         }, function(rsp) {
@@ -265,72 +266,25 @@
                     csrfmiddlewaretoken: '{{  csrf_token }}',
                     action: 'post'
                   },
-                  success: function (json) {
-                    console.log(json);
-                    location.reload();
+                  success: function (response) {
+                    console.log(response);
+                    if(response == 'SUCCESS') {
+                      alert('결제가 완료되었습니다.');
+                      location.href = '/';
+                    }else {
+                      alert('결제에 실패하였습니다');
+                      location.reload();
+                    }
+                    
                   },
                   error: function (e) {
                     alert('결제에 실패하였습니다. ' + rsp.error_msg);
                   }
                 });
-                
-                /*
-                $.ajax({
-                    type: 'POST',
-                    url: 'api/v1/payment/validation/' + rsp.imp_uid
-                }).done(function(data) {
-                    console.log(data);
-                    if (order.price == data.response.amount) {
-                        order.impUid = rsp.imp_uid;
-                        order.merchantUid = rsp.merchant_uid;
-                        // 결제 금액 일치. 결제 성공 처리
-                        $.ajax({
-                            url: "api/v1/payment/order",
-                            method: "post",
-                            data: JSON.stringify(order),
-                            contentType: "application/json"
-                        }).then(function(res) {
-                            console.log("res", res);
-                            console.log("rsp", rsp);
-                            var msg = '결제가 완료되었습니다.';
-                            msg += '고유ID : ' + rsp.imp_uid;
-                            msg += '상점 거래ID : ' + rsp.merchant_uid;
-                            msg += '결제 금액 : ' + rsp.paid_amount;
-                            msg += '카드 승인번호 : ' + rsp.apply_num;
-                            alert(msg);
-                        }).catch(function(error) {
-                            alert("주문정보 저장을 실패 했습니다.");
-                        });
-                    }
-                }).catch(function(error) {
-                    alert('결제에 실패하였습니다. ' + rsp.error_msg);
-                });
-                */
               } else {
                 alert(rsp.error_msg);
               }
         });
-
-
-        /*
-          $.ajax({
-            type: 'POST',
-            url: '{% url "cart:cart_update" %}',
-            data: {
-              product_id: $(this).data('index'),
-              product_qty: qty,
-              csrfmiddlewaretoken: '{{  csrf_token }}',
-              action: 'post'
-            },
-            success: function (json) {
-              console.log(json);
-              location.reload();
-            },
-            error: function (e) {
-              console.log(e);
-            }
-          });
-        */ 
 
       });
 
