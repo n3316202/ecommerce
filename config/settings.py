@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     #'allauth.socialaccount.providers.google', #구글로그인 구현시 추가
     'allauth.socialaccount.providers.kakao', # 카카오로그인 구현시 추가
     #'allauth.socialaccount.providers.naver', # 네이버 로그인 구현시 추가
+    'api',#dev_48
+    'rest_framework',#dev_48
+    'django_filters',#dev_48
 ]
 #dev_46
 #AUTH_USER_MODEL = 'user.User' #추가!! 없으면 오류 발생 "앱이름.모델명" user모델생성 후 allauth말고 내가 생성한 모델을 우선으로 적용
