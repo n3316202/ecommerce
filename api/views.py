@@ -8,7 +8,7 @@ from store.models import Category, Product
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.mixins import ListModelMixin,CreateModelMixin,DestroyModelMixin,RetrieveModelMixin, UpdateModelMixin
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 # Create your views here.
 
 #dev_48
@@ -111,3 +111,12 @@ class MixinsCategory(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, Ge
     
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+#dev_53
+    
+class APICategories(ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    
+class APICategory(RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
