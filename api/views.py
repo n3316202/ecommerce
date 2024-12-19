@@ -71,18 +71,18 @@ class APICategories(APIView):
 
 class APICategory(APIView):
     def get(self, request, pk):
-        category = get_object_or_404(Category, category_id=pk)
+        category = get_object_or_404(Category, id=pk)
         serializer = CategorySerializer(category)
         return Response(serializer.data)
     
     def put(self, request, pk):
-        category = get_object_or_404(Category, category_id=pk)
+        category = get_object_or_404(Category, id=pk)
         serializer = CategorySerializer(category, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
     
     def delete(self, request, pk):
-        category = get_object_or_404(Category, category_id=pk)
+        category = get_object_or_404(Category,id=pk)
         category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
