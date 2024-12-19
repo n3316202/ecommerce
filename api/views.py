@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from api.serializers import ProductSerializer
 from store.models import Product
 from rest_framework import status
+from rest_framework.views import APIView
 
 # Create your views here.
 
@@ -53,4 +54,35 @@ def api_product(request, pk):
     
     elif request.method == 'DELETE':
         product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class APICategories(APIView):
+    def get(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = CategorySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+class APICategory(APIView):
+    def get(self, request, pk):
+        category = get_object_or_404(Category, category_id=pk)
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        category = get_object_or_404(Category, category_id=pk)
+        serializer = CategorySerializer(category, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+    def delete(self, request, pk):
+        category = get_object_or_404(Category, category_id=pk)
+        category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
