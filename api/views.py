@@ -3,9 +3,9 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-import api
 from api.serializers import ProductSerializer
 from store.models import Product
+from rest_framework import status
 
 # Create your views here.
 
@@ -21,17 +21,36 @@ def hello_world_drf(request):
     return Response({"message":'Hello World!'})
 
 
-#def_49
-@api_view(['GET'])
+#def_50 추가 되도록
+@api_view(['GET','POST'])
 def api_products(request):
-    products = Product.objects.all()
-    serializer = ProductSerializer(products,many=True)
-    return Response(serializer.data)
+    
+    if request.method == 'GET':
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
 
-#def_49
-@api_view(['GET'])
-def api_product(request,pk):
-    #products = Product.objects.get(id=pk)
-    products = get_object_or_404(Product,id=pk)    
-    serializer = ProductSerializer(products)
-    return Response(serializer.data)
+    if request.method == 'POST':
+        serializer = ProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+#def_50 수정 삭제 조회가 되도록 추가
+@api_view(['GET', 'PUT', 'DELETE'])
+def api_product(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    
+    if request.method == 'GET':
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+    
+    elif request.method == 'PUT':
+        serializer = ProductSerializer(product, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
