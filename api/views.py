@@ -7,7 +7,8 @@ from api.serializers import CategorySerializer, ProductSerializer
 from store.models import Category, Product
 from rest_framework import status
 from rest_framework.views import APIView
-
+from rest_framework.mixins import ListModelMixin,CreateModelMixin,DestroyModelMixin,RetrieveModelMixin, UpdateModelMixin
+from rest_framework.generics import GenericAPIView
 # Create your views here.
 
 #dev_48
@@ -86,3 +87,27 @@ class APICategory(APIView):
         category = get_object_or_404(Category, category_id=pk)
         category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+#dev_52
+class MixinsCategories(ListModelMixin,CreateModelMixin,DestroyModelMixin,GenericAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    
+    def get(self, request, *args, **kwargs):
+        return self.list(request)
+        
+    def post(self, request, *args, **kwargs):
+        return self.create(request)
+
+class MixinsCategory(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+    
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
