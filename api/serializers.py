@@ -2,7 +2,7 @@ from rest_framework import serializers
 from store.models import Product
 
 
-#def_49 serializers.py 생성
+#dev_49 serializers.py 생성
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
