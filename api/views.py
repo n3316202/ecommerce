@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -26,4 +26,12 @@ def hello_world_drf(request):
 def api_products(request):
     products = Product.objects.all()
     serializer = ProductSerializer(products,many=True)
+    return Response(serializer.data)
+
+#def_49
+@api_view(['GET'])
+def api_product(request,pk):
+    #products = Product.objects.get(id=pk)
+    products = get_object_or_404(Product,id=pk)    
+    serializer = ProductSerializer(products)
     return Response(serializer.data)
