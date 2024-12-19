@@ -56,7 +56,7 @@ def api_product(request, pk):
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-
+#dev_51
 class APICategories(APIView):
     def get(self, request):
         categories = Category.objects.all()
