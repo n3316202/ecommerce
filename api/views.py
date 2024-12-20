@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.mixins import ListModelMixin,CreateModelMixin,DestroyModelMixin,RetrieveModelMixin, UpdateModelMixin
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
 # Create your views here.
 
 #dev_48
@@ -128,6 +129,23 @@ class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+    #dev_56
+    #https://wikidocs.net/197563
+    # url : categories/order_name_categories/
+    @action(detail=False, methods=['GET'])
+    def order_name_categories(self, request):
+        qs = Category.objects.all().order_by('-name')
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
+
+    # url : categories/{pk}/set_name/
+    # @action(detail=True, methods=['patch'])
+    # def set_name(self, request, pk):
+    #     instance = self.get_object()
+    #     instance.name = 
+    #     instance.save()
+    #     serializer = self.get_serializer(instance)
+    #     return Response(serializer.data)
 
 # REST API 규격에 맞춘 URL 매핑
 
