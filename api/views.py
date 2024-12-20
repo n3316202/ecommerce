@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.mixins import ListModelMixin,CreateModelMixin,DestroyModelMixin,RetrieveModelMixin, UpdateModelMixin
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 # Create your views here.
 
 #dev_48
@@ -111,8 +112,8 @@ class MixinsCategory(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, Ge
     
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
 #dev_53
-    
 class APICategories(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -120,3 +121,26 @@ class APICategories(ListCreateAPIView):
 class APICategory(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+#dev_54
+# List Route
+class CategoryViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+# REST API 규격에 맞춘 URL 매핑
+
+# List Route
+category_list = CategoryViewSet.as_view({
+    'get': 'list',
+    'post': 'create',
+})
+
+# Detail Route
+category_detail = CategoryViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy',
+})
