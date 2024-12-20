@@ -13,6 +13,8 @@ urlpatterns = [
     path("payment/", include('payment.urls')), #dev_41 settings 추가
     path('accounts/', include('allauth.urls')),#dev_46 
     path("api/", include("api.urls")),#dev_48
+    path("auth/", include('djoser.urls')),#dev_57
+    path("auth/", include('djoser.urls.jwt')),#dev_57
 ]
 
 if settings.DEBUG:

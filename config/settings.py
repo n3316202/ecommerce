@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta #dev_57
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,6 +57,7 @@ INSTALLED_APPS = [
     'api',#dev_48
     'rest_framework',#dev_48
     'django_filters',#dev_48
+    'djoser',#dev_57
 ]
 #dev_46
 #AUTH_USER_MODEL = 'user.User' #추가!! 없으면 오류 발생 "앱이름.모델명" user모델생성 후 allauth말고 내가 생성한 모델을 우선으로 적용
@@ -196,3 +198,16 @@ SOCIALACCOUNT_PROVIDERS ={
 "access_type": "online", #추가
 'prompt': 'select_account', #추가 간편로그인을 지원해줌
 }}}
+
+#dev_57
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+   'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+   'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+}
