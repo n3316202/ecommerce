@@ -132,15 +132,15 @@ class CategoryViewSet(ModelViewSet):
 # REST API 규격에 맞춘 URL 매핑
 
 # List Route
-category_list = CategoryViewSet.as_view({
-    'get': 'list',
-    'post': 'create',
-})
+# category_list = CategoryViewSet.as_view({
+#     'get': 'list',
+#     'post': 'create',
+# })
 
-# Detail Route
-category_detail = CategoryViewSet.as_view({
-    'get': 'retrieve',
-    'put': 'update',
-    'patch': 'partial_update',
-    'delete': 'destroy',
-})
+# # Detail Route
+# category_detail = CategoryViewSet.as_view({
+#     'get': 'retrieve',
+#     'put': 'update',
+#     'patch': 'partial_update',
+#     'delete': 'destroy',
+# })
