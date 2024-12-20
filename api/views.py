@@ -1,3 +1,4 @@
+import re
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view
@@ -131,21 +132,22 @@ class CategoryViewSet(ModelViewSet):
 
     #dev_56
     #https://wikidocs.net/197563
-    # url : categories/order_name_categories/
+    # url : categories/order_name/
     @action(detail=False, methods=['GET'])
-    def order_name_categories(self, request):
+    def order_name(self, request):
         qs = Category.objects.all().order_by('-name')
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 
-    # url : categories/{pk}/set_name/
-    # @action(detail=True, methods=['patch'])
-    # def set_name(self, request, pk):
-    #     instance = self.get_object()
-    #     instance.name = 
-    #     instance.save()
-    #     serializer = self.get_serializer(instance)
-    #     return Response(serializer.data)
+    #url : categories/{pk}/set_name/
+    @action(detail=True, methods=['patch'])
+    def set_name(self, request, pk):
+        instance = self.get_object()
+        print(request.data.get('name'))
+        instance.name = request.data.get('name')
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 # REST API 규격에 맞춘 URL 매핑
 
