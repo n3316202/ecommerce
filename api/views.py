@@ -4,7 +4,8 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.serializers import CategorySerializer, ProductSerializer
+from api.serializers import CategorySerializer, OrderSerializer, ProductSerializer
+from payment.models import Order
 from store.models import Category, Product
 from rest_framework import status
 from rest_framework.views import APIView
@@ -149,18 +150,14 @@ class CategoryViewSet(ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-# REST API 규격에 맞춘 URL 매핑
-
-# List Route
-# category_list = CategoryViewSet.as_view({
-#     'get': 'list',
-#     'post': 'create',
-# })
-
-# # Detail Route
-# category_detail = CategoryViewSet.as_view({
-#     'get': 'retrieve',
-#     'put': 'update',
-#     'patch': 'partial_update',
-#     'delete': 'destroy',
-# })
+#dev_58
+class OrderViewSet(ModelViewSet):
+    #queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        print(user.username)
+        if user.is_staff:
+            return Order.objects.all()
+        return Order.objects.filter(user=user)
