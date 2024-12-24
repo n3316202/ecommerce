@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'rest_framework',#dev_48
     'django_filters',#dev_48
     'djoser',#dev_57
+    'corsheaders',#dev_57
 ]
 #dev_46
 #AUTH_USER_MODEL = 'user.User' #추가!! 없으면 오류 발생 "앱이름.모델명" user모델생성 후 allauth말고 내가 생성한 모델을 우선으로 적용
@@ -65,6 +66,7 @@ INSTALLED_APPS = [
 SITE_ID = 1 #추가
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',#dev_57 #최상단에 추가해주기
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -211,3 +213,5 @@ SIMPLE_JWT = {
    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
 }
+
+CORS_ORIGIN_ALLOW_ALL = True #dev_57
