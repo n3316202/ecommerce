@@ -15,6 +15,10 @@ body {
     text-align: center;
     font-size: 14px;
 }
+
+#menu {
+    width: 100%;
+}
 nav {
     /*** Nav Bar Start ***/
     height: 54px;
@@ -45,6 +49,18 @@ nav {
     /* Nav Buttons */
     /* background-color: transparent; */
     border: none;
+    width: 100%; /* 추가 2025-01-05 */
+}
+/* 추가 2025-01-05 */
+.nav-item:hover {
+    border-radius: 5px;
+    background-color: #efefef;
+}
+/* 추가 2025-01-05 */
+.nav-item > a:link,
+.nav-item > a:visited {
+    text-decoration: none;
+    color: black;
 }
 
 #profile {
@@ -60,7 +76,7 @@ nav {
     /*** Story Side Start ***/
     overflow: hidden;
     position: relative;
-    margin-top: 4.8rem;
+    /* margin-top: 4.8rem; */ /*2025-01-05* 마진삭제 */
 }
 #story-photo {
     /* Story Profile Photo */
