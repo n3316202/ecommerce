@@ -37,13 +37,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'home',
-    'boards',
-    'accounts',
-    'store',
-    'cart',
-    'payment',#dev_41 앱추가
-    'instagram',#인스타그램 앱 추가
+    "home",
+    "boards",
+    "accounts",
+    "store",
+    "cart",
+    "payment",  # dev_41 앱추가
+    "instagram",  # 인스타그램 앱 추가
 ]
 
 MIDDLEWARE = [
@@ -61,7 +61,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -69,7 +69,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                 'cart.context_processors.cart'
+                "cart.context_processors.cart",
             ],
         },
     },
@@ -113,13 +113,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "ko"
 
-TIME_ZONE = 'Asia/Seoul'
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 
-#Timezone의 사용여부를 정한다.
-#False면 모든 datetime들을 표시하고 True면 template과 form에만 적용된다.
-#즉 DB에 저장되는 정보도 한국 시간대로 사용하려면 이 부분을 False로 지정해주어야 한다.
+# Timezone의 사용여부를 정한다.
+# False면 모든 datetime들을 표시하고 True면 template과 form에만 적용된다.
+# 즉 DB에 저장되는 정보도 한국 시간대로 사용하려면 이 부분을 False로 지정해주어야 한다.
 USE_TZ = False
 
 
@@ -128,7 +128,7 @@ USE_TZ = False
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / "static",
 ]
 
 # Default primary key field type
@@ -138,10 +138,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # 로그인 성공후 이동하는 URL
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/"
 
 # 미디어 파일 경로 설정
 import os
-#http://127.0.0.1:8000/media/파일경로
-MEDIA_URL = 'media/'		# ex) /media/photo1.png
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# http://127.0.0.1:8000/media/파일경로
+MEDIA_URL = "media/"  # ex) /media/photo1.png
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
