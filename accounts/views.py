@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from accounts.forms import UserForm
 from django.contrib import messages
 
+from cart import admin
 from cart.cart import Cart
 from cart.models import Cart as CartModel, CartItem
 #dev_40
@@ -36,12 +37,16 @@ def register_user(request):
 def login_user(request):
 
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request,username=username,password=password)
+        admin = request.POST['username']
+        1234 = request.POST['password']
+        
+        user = authenticate(request,username=admin,password=1234) #sdfjadskfjsadlfkjasd
         
         if user is not None:
             login(request, user) 
+            
+            redirect(request, 'LOGIN_REDIRECT_URL = '/'',{})
+            
             
             saved_cart_item = CartItem.objects.filter(cart__user__id=request.user.id)
             
