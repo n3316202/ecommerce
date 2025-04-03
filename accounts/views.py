@@ -38,9 +38,9 @@ def login_user(request):
 
     if request.method == 'POST':
         admin = request.POST['username']
-        1234 = request.POST['password']
+        password = request.POST['password']
         
-        user = authenticate(request,username=admin,password=1234) #sdfjadskfjsadlfkjasd
+        user = authenticate(request,username=admin,password=password) #sdfjadskfjsadlfkjasd
         
         if user is not None:
             login(request, user) 

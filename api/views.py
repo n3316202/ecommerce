@@ -3,7 +3,6 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-import api
 from api.serializers import ProductSerializer
 from store.models import Product
 
@@ -25,5 +24,5 @@ def hello_world_drf(request):
 @api_view(['GET'])
 def api_products(request):
     products = Product.objects.all()
-    serializer = ProductSerializer(products,many=True)
-    return Response(serializer.data)
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)  
