@@ -9,7 +9,7 @@ from rest_framework.routers import DefaultRouter
 #dev_48 app/urls.py 추가
 app_name = 'api'
 
-#dev_54
+#dev_55
 router = DefaultRouter()
 router.register(r'categories',CategoryViewSet)
 # /post/ 주소에 대해 URL Reverse 이름은 post-list이 등록
