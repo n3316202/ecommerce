@@ -128,9 +128,9 @@ class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+# dev_55 아래 주석처리
 
 # REST API 규격에 맞춘 URL 매핑
-
 # List Route
 # category_list = CategoryViewSet.as_view({
 #     'get': 'list',
